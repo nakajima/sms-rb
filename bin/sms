@@ -1,0 +1,32 @@
+#!/usr/bin/env ruby
+
+require File.join(File.dirname(__FILE__), '..', 'lib', 'sms')
+require 'optparse'
+
+from = to = nil
+OptionParser.new do |opts|
+  opts.banner = 'Usage: sms "some message" [options]'
+  opts.separator "Specific options:"
+  opts.on('-t', '--to [PHONE NUMBER]', "Recipient's number")    { |v| to    ||= v }
+  opts.on('-f', '--from [PHONE NUMBER]', "Your Twilio number")  { |v| from  ||= v }
+end.parse!
+
+ENV['TWILIO_ID'] || abort("Please set ENV['TWILIO_ID'] to your Twilio API id.")
+ENV['TWILIO_SECRET'] || abort("Please set ENV['TWILIO_SECRET] to your Twilio API secret key.")
+
+if from.nil? and ENV['TWILIO_PHONE'].nil?
+  abort <<-ERR
+  Twilio number blank.
+  Please set ENV['TWILIO_PHONE'] or pass the --from option.
+  ERR
+end
+
+if to.nil?
+  abort 'Recipient number blank.'
+end
+
+begin
+  SMS.text! ARGV.join(' '), :from => from, :to => to
+rescue => e
+  abort('Failure: ' + e.message)
+end
