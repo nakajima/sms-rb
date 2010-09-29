@@ -10,7 +10,7 @@ module SMS
       'To' => options[:to],
       'From' => options[:from] || ENV['TWILIO_PHONE'],
       'Body' => message
-    if res.code == 201
+    if res.code.to_i == 201
       true
     else
       if options[:raise]
