@@ -35,8 +35,7 @@ class TestSms < Test::Unit::TestCase
     link                 = "/2008-08-01/Accounts/#{ENV['TWILIO_ID']}/SMS/Messages"
     
     twilio = mock()
-    twilio.expects(:request).with(link, "POST", {'To' => TO_NUMBER, 'From' => FROM_NUMBER, 'Body' => MESSAGE})
-                            .returns(mock(:code => SUCCESS_CODE))
+    twilio.expects(:request).with(link, "POST", {'To' => TO_NUMBER, 'From' => FROM_NUMBER, 'Body' => MESSAGE}).returns(mock(:code => SUCCESS_CODE))
     
     Twilio::RestAccount.expects(:new).with("twilio_id", "twilio_secret").returns(twilio)
     assert_equal(true, SMS.text(MESSAGE, :from => FROM_NUMBER, :to => TO_NUMBER))
@@ -48,8 +47,7 @@ class TestSms < Test::Unit::TestCase
     link              = "/2008-08-01/Accounts/#{SMS.twilio_id}/SMS/Messages"
     
     twilio = mock()
-    twilio.expects(:request).with(link, "POST", {'To' => TO_NUMBER, 'From' => FROM_NUMBER, 'Body' => MESSAGE})
-                            .returns(mock(:code => SUCCESS_CODE))
+    twilio.expects(:request).with(link, "POST", {'To' => TO_NUMBER, 'From' => FROM_NUMBER, 'Body' => MESSAGE}).returns(mock(:code => SUCCESS_CODE))
     
     Twilio::RestAccount.expects(:new).with("twilio_id", "twilio_secret").returns(twilio)
     assert_equal(true, SMS.text(MESSAGE, :from => FROM_NUMBER, :to => TO_NUMBER))
